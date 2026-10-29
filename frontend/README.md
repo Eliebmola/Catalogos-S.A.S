@@ -6,7 +6,7 @@ Aplicación React, Vite y TypeScript para vendedores y visitantes. Los vendedore
 
 1. Requiere Node.js 20 o superior.
 2. Copia `.env.example` a `.env.local` y completa las variables.
-3. Instala dependencias: `npm install`.
+3. Instala dependencias: `npm ci`.
 4. Inicia Vite: `npm run dev` (normalmente `http://localhost:5173`).
 5. Compila para producción: `npm run build`.
 
@@ -16,9 +16,9 @@ Las variables `VITE_PRIVACY_CONTROLLER_*` se muestran en el aviso legal; son dat
 
 ## CORS y publicación
 
-GitHub almacena el código y no es el origen de las solicitudes del navegador. Para evitar `localhost` en producción:
+GitHub almacena el código y no es el origen de las solicitudes del navegador. Para el monorepo actual, configura Vercel con Root Directory `frontend` (build `npm run build`, output `dist`) y Render con Root Directory `backend` (build `pip install -r requirements.txt`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT`). Para producción:
 
-1. Sube el frontend y el backend a repositorios separados, o usa una estructura monorepo deliberada.
+1. Este repositorio es un monorepo: en Vercel usa `frontend` como Root Directory y en Render usa `backend`.
 2. Define primero el dominio estable del frontend en su hosting (por ejemplo, Vercel o Netlify).
 3. En el backend, configura `CORS_ORIGINS` con ese origen exacto HTTPS, sin ruta ni barra final. Ejemplo: `CORS_ORIGINS=https://catalogos.example.com`. Para desarrollo local usa `http://localhost:5173` solo en el `.env` local.
 4. Publica el backend y obtén su URL pública HTTPS.

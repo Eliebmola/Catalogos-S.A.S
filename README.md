@@ -1,32 +1,81 @@
 # Catálogos S.A.S.
 
-Plataforma SaaS para que vendedores creen catálogos públicos y reciban pedidos. El repositorio agrupa API y aplicación web en carpetas separadas.
+**A full-stack SaaS platform for independent sellers to publish product catalogs and receive orders.** Built and deployed as a production web application.
 
-## Estructura
+[Open the application](https://catalogos-s-a-s.vercel.app/) · [API health](https://catalogos-s-a-s.onrender.com/health) · [GitHub repository](https://github.com/Eliebmola/Catalogos-S.A.S)
 
-- `backend/`: API FastAPI, modelos SQLAlchemy, configuración y scripts SQL de Supabase.
-- `frontend/`: aplicación React + Vite + Tailwind.
+Catálogos S.A.S. helps sellers create shareable storefronts without requiring buyers to create an account. Sellers manage products, images, categories, customer orders, subscriptions, and support from one dashboard. Buyers browse a seller's catalog, add products to a cart, submit an order, and can continue the conversation with the seller through WhatsApp.
 
-## Inicio local
+## Project highlights
 
-1. Configura las variables de entorno usando `backend/.env.example` y `frontend/.env.example`. No subas archivos `.env` reales.
-2. Instala y ejecuta la API desde `backend/`:
-   ```powershell
-   py -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   pip install -r requirements.txt
+- Built and deployed a production full-stack application, with the React web client on Vercel and the FastAPI service on Render.
+- Designed a modular REST API with FastAPI, Pydantic, async SQLAlchemy, and PostgreSQL on Supabase.
+- Implemented Supabase authentication, JWT verification, seller/admin authorization, and catalog ownership checks.
+- Developed catalog, product, image, category, seller profile, shopping cart, and order workflows.
+- Added an internal seller-to-admin support inbox and an administrator panel for manual subscription management.
+- Implemented privacy consent, seller guidance, multi-language UI, rate limiting, request-size limits, and production CORS configuration.
+- Kept credentials out of the repository; environment templates document which settings belong in each hosting provider.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    Buyer[Buyer browser] --> Vercel[React + Vite frontend]
+    Seller[Seller / admin browser] --> Vercel
+    Vercel -->|HTTPS REST API| Render[FastAPI backend]
+    Vercel -->|Authentication| Auth[Supabase Auth]
+    Render -->|Async PostgreSQL| DB[Supabase PostgreSQL]
+    Render -->|Product and brand images| Storage[Supabase Storage]
+```
+
+## Technology
+
+| Area | Stack |
+| --- | --- |
+| Frontend | React, TypeScript, Vite, Tailwind CSS, React Router, Supabase JS |
+| Backend | Python, FastAPI, Pydantic, SQLAlchemy async, asyncpg |
+| Data and identity | Supabase PostgreSQL, Auth, Storage |
+| Deployment | Vercel (frontend), Render (API), GitHub (source) |
+
+## Repository structure
+
+```text
+backend/     FastAPI application, SQLAlchemy models, SQL scripts, tests
+frontend/    React + Vite application and Vercel SPA routing config
+```
+
+## Run locally
+
+1. Create local environment files from `backend/.env.example` and `frontend/.env.example`. Keep real `.env` files out of Git.
+2. Start the backend from `backend/`:
+   ```bash
+   python -m venv .venv
+   # Activate the environment, then:
+   pip install -r requirements-dev.txt
    uvicorn app.main:app --reload
    ```
-3. Instala y ejecuta el frontend desde `frontend/`:
-   ```powershell
+3. Start the frontend from `frontend/`:
+   ```bash
    npm ci
    npm run dev
    ```
 
-## CORS y despliegue
+The local frontend runs at `http://localhost:5173`; the local API runs at `http://localhost:8000`.
 
-En desarrollo, el frontend local usa `http://localhost:5173`. En producción, configura `CORS_ORIGINS` en el backend con el origen HTTPS exacto donde se publica el frontend (sin ruta, consulta ni `*`). Configura `VITE_API_URL` en el frontend con la URL pública de la API y reconstruye el frontend después de cambiarla.
+## Production configuration
 
-Las plantillas `.env.example` contienen nombres y valores de ejemplo solamente. Mantén las credenciales reales fuera de GitHub; nunca uses una clave `service_role` ni secretos en variables `VITE_`.
+- Vercel **Root Directory**: `frontend`; build: `npm run build`; output: `dist`.
+- Render **Root Directory**: `backend`; build: `pip install -r requirements.txt`; start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
+- Set `VITE_API_URL` to the public API origin and `CORS_ORIGINS` to the exact HTTPS frontend origin(s).
+- Set database credentials and Supabase service-role credentials only in backend hosting secrets. Browser variables prefixed with `VITE_` are public at runtime; never place private keys there.
+- Apply the SQL scripts in `backend/supabase/` to the Supabase project before using the related features.
 
-Consulta los README de `backend/` y `frontend/` para detalles de configuración, Supabase y despliegue.
+## Maintainer
+
+**Elieb Mola** · [GitHub profile](https://github.com/Eliebmola)
+
+---
+
+### Resumen en español
+
+Plataforma SaaS desarrollada y desplegada en producción para que vendedores publiquen catálogos y reciban pedidos sin exigir que el comprador cree una cuenta. Incluye gestión de productos, imágenes y categorías, carrito, bandeja de pedidos, soporte interno y administración manual de suscripciones. Frontend React/TypeScript en Vercel, API FastAPI en Render y PostgreSQL/Auth/Storage en Supabase.

@@ -60,7 +60,7 @@ Documentación interactiva: http://localhost:8000/docs (deshabilitada si `ENVIRO
 
 Ya están disponibles la gestión de catálogos, productos e imágenes, categorías, tienda pública con búsqueda y carrito, consentimiento de privacidad, control manual de suscripciones y la mensajería interna vendedor-administrador.
 
-Pendiente: conexión real con SMTP y WhatsApp para avisos automáticos; limitar abuso de forma distribuida en el proxy/WAF de producción; CI/CD y despliegue. Los pedidos ya se guardan en la bandeja del vendedor. La suscripción aplica una prueba de seis días, dos catálogos incluidos por $15.000 COP/mes y $5.000 COP/mes por cada catálogo extra aprobado manualmente por administración. Tras el vencimiento hay dos días de gracia; luego se oculta el catálogo público hasta registrar la renovación.
+Pendiente: conexión real con SMTP y WhatsApp para avisos automáticos; limitar abuso de forma distribuida en el proxy/WAF de producción; automatizar CI/CD. El backend se encuentra desplegado en Render y el frontend en Vercel. Los pedidos ya se guardan en la bandeja del vendedor. La suscripción aplica una prueba de seis días, dos catálogos incluidos por $15.000 COP/mes y $5.000 COP/mes por cada catálogo extra aprobado manualmente por administración. Tras el vencimiento hay dos días de gracia; luego se oculta el catálogo público hasta registrar la renovación.
 
 ## Suscripciones manuales y nuevas tablas
 
